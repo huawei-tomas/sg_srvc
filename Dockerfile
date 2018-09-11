@@ -46,6 +46,9 @@ RUN cd /app/scene-graph-TF-release/lib && \
 #    wget https://www.dropbox.com/s/2rgq9vcx1jpeyjp/sg_checkpoint.zip && \
 #    unzip sg_checkpoint.zip && \
 #    rm sg_checkpoint.zip
+RUN cd /app/Faster-RCNN_TF && \
+    wget https://www.dropbox.com/s/cfz3blmtmwj6bdh/VGGnet_fast_rcnn_iter_70000.ckpt
+
 
 
 # We dont technically need tkinter but w/e. Dont fight make a right.
@@ -59,9 +62,10 @@ RUN apt-get update && \
 # Setup Faster-RCNN_TF in /app
 COPY ./Faster-RCNN_TF /app/Faster-RCNN_TF
 
-# Build the fork where 'bash make.sh' is commented out.
+# Build the fork where 'bash make.sh' is commented out and copy the roi_pooling_op library over.
 RUN cd /app/Faster-RCNN_TF/lib && \
-
+    make && \
+    cp /app/scene-graph-TF-release/lib/roi_pooling_layer/roi_pooling_op_gpu.so /app/Faster-RCNN_TF/lib/roi_pooling_layer/roi_pooling.so
 
 
 
